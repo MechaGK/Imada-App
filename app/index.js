@@ -6,12 +6,22 @@ import {
 
 import {EventEmitter} from 'fbemitter';
 
+import * as firebase from 'firebase';
+
 import Settings from './views/Settings';
 import Home from './views/home/Home';
 
 let _emitter = new EventEmitter();
 import DrawerLayout from './layouts/DrawerLayout';
 
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: 'AIzaSyDTrcxyv3aHGM5v_NpxkLrCMR5mCy0MUp8',
+    authDomain: 'imada-app.firebaseapp.com',
+    databaseURL: 'https://imada-app.firebaseio.com',
+    storageBucket: 'imada-app.appspot.com'
+};
+firebase.initializeApp(firebaseConfig);
 
 export default class ImadaApp extends Component {
     componentDidMount() {

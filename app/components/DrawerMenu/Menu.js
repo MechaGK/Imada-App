@@ -26,9 +26,12 @@ export default class Menu extends Component {
         UserManager.addListener((user) => this.onUserChanged(user));
     }
 
+    componentDidMount() {
+        this.onUserChanged(UserManager.getCurrentUser());
+    }
+
     onUserChanged(newUser) {
-        console.log(newUser);
-        if (newUser.signedIn) {
+        if (newUser !== null) {
             this.setState({
                 userName: 'signed in',
                 userEmail: newUser.email,
@@ -54,7 +57,6 @@ export default class Menu extends Component {
     }
 
     _onItemSelect(item) {
-        console.log(this);
         this.state.navigate(item);
         this.setSelected(item);
     }

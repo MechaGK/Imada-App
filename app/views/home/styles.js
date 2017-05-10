@@ -7,6 +7,7 @@ export default StyleSheet.create({
         width: null,
         height: null,
         justifyContent: 'space-between',
+        backgroundColor: colors.background,
     },
     buttonTextStyle: {
         textAlign: 'center',

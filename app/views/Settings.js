@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import UserManager from '../helpers/UserManager';
+import colors from '../config/colors';
 
 export default class Settings extends Component {
 
@@ -38,7 +39,6 @@ export default class Settings extends Component {
     }
 
     onUserChanged(newUser) {
-        console.log(newUser);
     }
 
     emailInputChanged(text) {
@@ -63,7 +63,7 @@ export default class Settings extends Component {
 
     render() {
         return (
-            <View style={{padding: 16,}}>
+            <View style={{padding: 16, backgroundColor: colors.backgroundColor,}}>
                 <Text>Email</Text>
                 <TextInput
                     value={this.state.email}
@@ -78,7 +78,7 @@ export default class Settings extends Component {
                     value={this.state.password}
                     onChangeText={this.passwordInputChanged}
                     secureTextEntry={true}
-                    autoCapitalize={false}
+                    autoCapitalize={'none'}
                     height={48}
                     placeholder={'hunter2'}
                     autoCorrect={false}

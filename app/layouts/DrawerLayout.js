@@ -32,7 +32,8 @@ export default class DrawerLayout extends Component {
     }
 
     navigate(route) {
-        console.log(route);
+        this._drawer.close();
+
         const currentRoutes = this._navigator.getCurrentRoutes();
         const currentRoute = currentRoutes[currentRoutes.length - 1].id;
 
@@ -43,7 +44,6 @@ export default class DrawerLayout extends Component {
                 this._navigator.push(getRoute(route));
             }
         }
-        this._drawer.close();
     }
 
     render() {
