@@ -29,15 +29,6 @@ export default class SignInScreen extends Component {
         this.usernameInputChanged = this.usernameInputChanged.bind(this);
         this.passwordInputChanged = this.passwordInputChanged.bind(this);
         this.loginButtonPressed = this.loginButtonPressed.bind(this);
-        this.registerPressed = this.registerPressed.bind(this);
-    }
-
-    loginButtonPressed() {
-        this.props.signInPressed(this.state.email, this.state.password);
-    }
-
-    registerPressed() {
-        this.props.registerPressed(this.state.email, this.state.password);
     }
 
     usernameInputChanged(text) {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Image, Text, View, ListView} from 'react-native';
-import {DrawerItems} from 'react-navigation';
+import {Image, Text, View, Alert} from 'react-native';
+import {DrawerItems, NavigationActions} from 'react-navigation';
 
 import Button from 'react-native-button';
 
@@ -12,6 +12,7 @@ import UserManager from '../../helpers/UserManager';
 export default class Menu extends Component {
     props: {
         items: any,
+        getNavigator: Object,
     };
 
     state = {
@@ -58,7 +59,40 @@ export default class Menu extends Component {
                         </Text>
                     </View>
                 </Image>
-                <DrawerItems {...this.props.items} />
+                <DrawerItems {...{
+                    ...this.props.items,
+                    onItemPress: (route) => {
+                        console.log(route);
+                        const navigation = this.props.getNavigator();
+
+                        if (route.focused) {
+                            navigation.navigate('DrawerClose');
+                            return;
+                        }
+
+                        var resetAction = {};
+                        if (route.route.routeName === 'Home') {
+                            resetAction = NavigationActions.reset({
+                                index: 0,
+                                actions: [
+                                    NavigationActions.navigate({routeName: 'Home'})
+                                ]
+                            });
+                        } else {
+                            resetAction = NavigationActions.reset({
+                                index: 1,
+                                actions: [
+                                    NavigationActions.navigate({routeName: 'Home'}),
+                                    NavigationActions.navigate({routeName: route.route.routeName})
+                                ]
+                            });
+                        }
+
+                        console.log(navigation);
+
+                        navigation.dispatch(resetAction);
+                    }
+                }} />
             </View>
         );
     }

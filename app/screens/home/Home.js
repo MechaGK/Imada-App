@@ -15,6 +15,10 @@ import colors from '../../config/colors';
 import ActivityList from '../../components/ActivityList';
 import UserManager from '../../helpers/UserManager';
 
+import SettingsScreen from '../SettingsScreen';
+
+var mainNavigator;
+
 export class Home extends Component {
     static navigationOptions = {
         title: 'Home',
@@ -35,6 +39,8 @@ export class Home extends Component {
 
         this._beerPressed = this._beerPressed.bind(this);
         this._sodaPressed = this._sodaPressed.bind(this);
+
+        mainNavigator = this.props.navigation;
     }
 
     async componentDidMount() {
@@ -84,22 +90,28 @@ export class Home extends Component {
             </View>
         );
     }
-};
+}
 
 const Stack = StackNavigator({
     Home: {
         screen: Home,
+    },
+    Settings: {
+        screen: SettingsScreen,
     },
 }, {
     initialRouteName: 'Home',
 });
 
 export const HomeNavigator = DrawerNavigator({
-    Stack: {
+    Home: {
         screen: Stack,
     },
+    Settings: {
+        screen: SettingsScreen,
+    },
 }, {
-    contentComponent: props => <Menu items={props}/>
+    contentComponent: props => <Menu items={props} getNavigator={() => mainNavigator}/>,
 });
 
 
