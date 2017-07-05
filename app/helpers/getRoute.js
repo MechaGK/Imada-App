@@ -2,9 +2,9 @@ import React from 'react-native';
 
 export default function (scene) {
     const componentMap = {
-        'Home': {
-            title: 'Home',
-            id: 'Home'
+        "HomeNavigator": {
+            title: 'HomeNavigator',
+            id: 'HomeNavigator'
         },
         'Settings': {
             title: 'Settings',

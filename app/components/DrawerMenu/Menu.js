@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Image, Text, View, ListView} from 'react-native';
+import {DrawerItems} from 'react-navigation';
 
 import Button from 'react-native-button';
 
@@ -9,21 +10,25 @@ import images from '../../config/images';
 import UserManager from '../../helpers/UserManager';
 
 export default class Menu extends Component {
+    props: {
+        items: any,
+    };
+
+    state = {
+        userName: 'no user',
+        userEmail: 'not signed in',
+    }
+
     constructor(props) {
         super(props);
-        const dataSource = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
-        this.state = {
-            dataSource: dataSource.cloneWithRows(['Home', 'Settings']),
-            navigate: props.navigate,
-            selectedItem: 'Home',
-            userName: '',
-            userEmail: 'not signed in',
-        };
 
-        this._onItemSelect = this._onItemSelect.bind(this);
-        this._renderMenuItem = this._renderMenuItem.bind(this);
+        this.onUserChanged = this.onUserChanged.bind(this);
 
         UserManager.addListener((user) => this.onUserChanged(user));
+    }
+
+    async componentDidMount() {
+        this.onUserChanged(await UserManager.getCurrentUser());
     }
 
     onUserChanged(newUser) {
@@ -40,27 +45,6 @@ export default class Menu extends Component {
         }
     }
 
-    _renderMenuItem(item) {
-        let style = styles.menuItem;
-        if (this.state.selectedItem === item) {
-            style = [styles.menuItem, styles.selectedItem];
-        }
-        return (
-            <Button title={item} style={style} onPress={() => this._onItemSelect(item)}>
-                {item}
-            </Button>
-        );
-    }
-
-    _onItemSelect(item) {
-        this.state.navigate(item);
-        this.setSelected(item);
-    }
-
-    setSelected(item) {
-        this.setState({selectedItem: item});
-    }
-
     render() {
         return (
             <View style={styles.container}>
@@ -74,16 +58,7 @@ export default class Menu extends Component {
                         </Text>
                     </View>
                 </Image>
-                <ListView
-                    key={this.state.selectedItem}
-                    style={styles.itemContainer}
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderMenuItem}
-                    scrollEnabled={false}
-                />
-                <Text>
-                    {this.state.selectedItem}
-                </Text>
+                <DrawerItems {...this.props.items} />
             </View>
         );
     }

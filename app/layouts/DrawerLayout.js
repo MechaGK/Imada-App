@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {
     Navigator,
     Text,
@@ -20,11 +20,6 @@ import images from '../config/images';
 import colors from '../config/colors';
 
 export default class DrawerLayout extends Component {
-    static propTypes = {
-        rightButtonPress: PropTypes.func.isRequired,
-        renderContent: PropTypes.func.isRequired,
-    };
-
     constructor(props) {
         super(props);
 
@@ -36,7 +31,7 @@ export default class DrawerLayout extends Component {
         const currentRoute = currentRoutes[currentRoutes.length - 1].id;
 
         if (route !== currentRoute) {
-            if (route === 'Home') {
+            if (route === 'HomeNavigator') {
                 this._navigator.pop();
             } else {
                 this._navigator.push(getRoute(route));
@@ -67,8 +62,8 @@ export default class DrawerLayout extends Component {
                     ref={(ref) => this._navigator = ref}
                     configureScene={(route) => Navigator.SceneConfigs.FloatFromLeft}
                     initialRoute={{
-                        id: 'Home',
-                        title: 'Home',
+                        id: 'HomeNavigator',
+                        title: 'HomeNavigator',
                         index: 0
                     }}
                     renderScene={(route, navigator) => this.renderContentView(route, navigator)}

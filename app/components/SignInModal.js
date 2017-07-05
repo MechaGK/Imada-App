@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {
     Modal,
     Text,
@@ -14,12 +14,6 @@ export default class SignInModal extends Component {
         visible: false,
         email: '',
         password: '',
-    };
-
-    static propTypes = {
-        signInPressed: PropTypes.func.isRequired,
-        visible: PropTypes.bool.isRequired,
-        working: PropTypes.bool.isRequired,
     };
 
     constructor(props) {

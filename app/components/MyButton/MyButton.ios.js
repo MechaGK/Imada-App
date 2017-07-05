@@ -8,9 +8,9 @@ import {
 import styles from './styles';
 
 export default class MyButton extends Component {
-    static propTypes = {
-        text: React.PropTypes.string.isRequired,
-        onPress: React.PropTypes.func,
+    props: {
+        text: string,
+        onPress: () => void,
     };
 
     render() {

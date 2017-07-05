@@ -7,7 +7,9 @@ class UserManager {
     _currentUser = null;
     emitter = new EventEmitter();
 
-    async userSignIn(email, password) {
+    async userSignIn(username, password) {
+        console.log(username);
+        console.log(password);
         let response = await fetch(`${serverAddress}/api/ImadaUsers/login`, {
             method: 'POST',
             headers: {
@@ -15,7 +17,7 @@ class UserManager {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: email,
+                username: username,
                 password: password,
             })
         });
@@ -150,6 +152,10 @@ class UserManager {
         } else {
             return this._currentUser;
         }
+    }
+
+    isSignedIn() {
+        return this._currentUser !== null;
     }
 }
 

@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {
     Modal,
     Text,
@@ -9,20 +9,13 @@ import {
 
 import colors from '../config/colors';
 
-export default class RegisterModal extends Component {
+export default class RegisterScreen extends Component {
     state = {
         visible: false,
         name: '',
         email: '',
         password: '',
         passwordRepeat: '',
-    };
-
-    static propTypes = {
-        registerPressed: PropTypes.func.isRequired,
-        visible: PropTypes.bool.isRequired,
-        backPressed: PropTypes.func.isRequired,
-        working: PropTypes.bool.isRequired,
     };
 
     constructor(props) {
@@ -122,7 +115,7 @@ export default class RegisterModal extends Component {
                                 this.props.backPressed();
                             }} style={{flex: 1,}} color={colors.secondary} disabled={this.props.working}/>
                             <Button title="Register" onPress={this.buttonPressed} style={{flex: 1,}}
-                                    color={colors.secondary} disabled={this.props.working}/>
+                                    color={colors.secondary} disabled={this.state.working}/>
                         </View>
 
                         <Text style={{fontSize: 14, color: 'black'}}>
