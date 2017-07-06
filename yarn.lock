@@ -4095,9 +4095,9 @@ react-devtools-core@^2.1.8:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-native-button@^1.8.2:
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/react-native-button/-/react-native-button-1.8.2.tgz#49e5cadd22ee443adea52a85539d288aa2117ade"
+react-native-button@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-button/-/react-native-button-2.0.0.tgz#5b798f0ac8c9c5bfd495c7f5f308beb49ed40a4b"
 
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"

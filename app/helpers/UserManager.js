@@ -154,8 +154,37 @@ class UserManager {
         }
     }
 
-    isSignedIn() {
-        return this._currentUser !== null;
+    async spendAmount(amount: number) {
+        if (this._currentUser === null) return;
+
+        const response = await fetch(`${serverAddress}/api/ImadaUsers/spend?${this._currentUser.token}`, {
+            method: 'POST',
+            form: `id=${this._currentUser.userId}&amount=${amount}&time=${(new Date()).toJSON()}`
+        });
+
+        let responseJson = await response.json();
+
+        if (responseJson.error !== undefined) {
+            return {
+                code: responseJson.error.code,
+                message: responseJson.error.message,
+                statusCode: responseJson.error.statusCode,
+            };
+        }
+
+        const transactionResponse = await fetch(`${serverAddress}/api/Transaction/${responseJson.transactionId}?access_token=${this._currentUser.token}`);
+
+        const transaction = await transactionResponse.json();
+
+        const transactionToSave = {
+            [transaction.id]: transaction,
+        };
+
+        AsyncStorage.mergeItem('transactions', JSON.stringify(transactionToSave), (errors) => {
+            console.log(errors);
+        });
+
+        return transaction;
     }
 }
 

@@ -58,11 +58,11 @@ export class Home extends Component {
     }
 
     _sodaPressed() {
-        this._updateActivities('soda');
+        this._updateActivities(Date.now());
     }
 
     _beerPressed() {
-        this._updateActivities('beer');
+        this._updateActivities(Date.now());
     }
 
     render() {
