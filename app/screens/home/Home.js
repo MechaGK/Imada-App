@@ -32,6 +32,7 @@ export class Home extends Component {
         registerVisible: false,
         working: false,
         username: '',
+        lastPress: 0,
     };
 
     constructor(props) {
@@ -52,9 +53,15 @@ export class Home extends Component {
     }
 
     _updateActivities(itemId) {
+        if (this.state.lastPress > Date.now() - 200) {return;}
+
         const newActivities = this.state.latestActivity.slice();
         newActivities.unshift(itemId);
-        this.setState({latestActivity: newActivities});
+        this.setState({latestActivity: newActivities.slice(0, 5)});
+
+        this.setState({
+            lastPress: Date.now(),
+        });
     }
 
     _sodaPressed() {
