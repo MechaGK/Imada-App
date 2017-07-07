@@ -7,11 +7,14 @@ import {
     Button
 } from 'react-native';
 
+import { StackNavigator } from 'react-navigation';
+
 import colors from '../config/colors';
 
 import UserManager from '../helpers/UserManager';
+import RegistrationScreen from '../screens/RegisterScreen';
 
-export default class SignInScreen extends Component {
+export class SignInScreen extends Component {
     static navigationOptions = {
         title: 'Sign In',
     };
@@ -118,3 +121,12 @@ export default class SignInScreen extends Component {
         )
     }
 }
+
+export const SignInNavigator = StackNavigator({
+    SignIn: {
+        screen: SignInScreen,
+    },
+    Register: {
+        screen: RegistrationScreen,
+    },
+});

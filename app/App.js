@@ -18,13 +18,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import UserManager from './helpers/UserManager';
 
 import { HomeNavigator } from './screens/home/Home';
-import SignInScreen from './screens/SignInScreen';
-import RegistrationScreen from './screens/RegisterScreen';
+import { SignInNavigator } from './screens/SignInScreen';
 
 const createBaseNavigator = currentUser => {
     const navigator = StackNavigator({
-        SignIn: {screen: SignInScreen},
-        Register: {screen: RegistrationScreen},
+        SignIn: {screen: SignInNavigator},
         HomeNavigator: {screen: HomeNavigator},
     }, {
         initialRouteName: currentUser !== null ? 'HomeNavigator' : 'SignIn',
