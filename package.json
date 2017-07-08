@@ -11,12 +11,13 @@
     "global": "^4.3.1",
     "moment": "^2.16.0",
     "react": "16.0.0-alpha.12",
+    "react-mixin": "2",
     "react-native": "0.45.1",
     "react-native-button": "^2.0.0",
     "react-native-drawer": "^2.3.0",
     "react-native-vector-icons": "^4.1.0",
     "react-navigation": "^1.0.0-beta.11",
-    "react-redux": "^5.0.5"
+    "react-timer-mixin": "^0.13.3"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -29,6 +30,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
+    "flow-bin": "0.45.0",
     "flow-remove-types": "^1.2.1",
     "jest": "17.0.2",
     "jest-react-native": "17.0.2",
