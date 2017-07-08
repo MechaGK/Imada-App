@@ -12,7 +12,7 @@ import MyButton from '../../components/MyButton/MyButton';
 import styles from './styles';
 
 import colors from '../../config/colors';
-import ActivityList from '../../components/ActivityList';
+import { ActivityList, ItemList } from '../../components/ActivityList';
 import UserManager from '../../helpers/UserManager';
 
 import SettingsScreen from '../SettingsScreen';
@@ -52,11 +52,11 @@ export class Home extends Component {
         });
     }
 
-    _updateActivities(itemId) {
+    _updateActivities(item: ItemList) {
         if (this.state.lastPress > Date.now() - 200) {return;}
 
         const newActivities = this.state.latestActivity.slice();
-        newActivities.unshift(itemId);
+        newActivities.unshift(item);
         this.setState({latestActivity: newActivities.slice(0, 5)});
 
         this.setState({
@@ -65,11 +65,19 @@ export class Home extends Component {
     }
 
     _sodaPressed() {
-        this._updateActivities(Date.now());
+        this._updateActivities({
+            date: new Date(),
+            type: 'soda',
+            amount: 5,
+        });
     }
 
     _beerPressed() {
-        this._updateActivities(Date.now());
+        this._updateActivities({
+            date: new Date(),
+            type: 'beer',
+            amount: 5,
+        });
     }
 
     render() {

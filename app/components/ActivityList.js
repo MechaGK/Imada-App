@@ -8,10 +8,14 @@ const itemConfig = {
     price: 5,
 };
 
-export default class ActivityList extends Component {
+export type ListItem = { date: Date, type: 'soda' | 'beer', amount: number }
+export class ActivityList extends Component {
     props: {
-        itemList: Array<number>,
-        style: ?StyleSheet,
+        itemList: Array<ListItem>,
+    };
+
+    static defaultProps: {
+        style: StyleSheet,
     };
 
     constructor(props) {
@@ -45,16 +49,16 @@ export default class ActivityList extends Component {
         return `${hours}:${minutes}:${seconds}`;
     }
 
-    _renderMenuItem(itemId: number) {
-        const undoable = Date.now() - itemId < 10000;
+    _renderMenuItem(item: ListItem) {
+        const undoable = Date.now() - item.date < 10000;
         return (
             <View style={styles.item}>
-                <Text style={{ fontFamily: 'monospace' }}>{this.formatDate(new Date(itemId))} - {itemConfig.price}kr</Text>
+                <Text style={{ fontFamily: 'monospace' }}>{this.formatDate(item.date)} - {item.amount}kr</Text>
                 <Button
                     title={undoable ? 'Undo' : ''}
                     onPress={() => {
                         const itemList = this.props.itemList;
-                        const index = itemList.indexOf(itemId);
+                        const index = itemList.indexOf(item);
                         itemList.splice(index, 1);
                         const dataSource = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
                         this.setState({
