@@ -50,23 +50,9 @@ export class ActivityList extends Component {
     }
 
     _renderMenuItem(item: ListItem) {
-        const undoable = Date.now() - item.date < 10000;
         return (
             <View style={styles.item}>
                 <Text style={{ fontFamily: 'monospace' }}>{this.formatDate(item.date)} - {item.amount}kr</Text>
-                <Button
-                    title={undoable ? 'Undo' : ''}
-                    onPress={() => {
-                        const itemList = this.props.itemList;
-                        const index = itemList.indexOf(item);
-                        itemList.splice(index, 1);
-                        const dataSource = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
-                        this.setState({
-                            dataSource: dataSource.cloneWithRows(itemList),
-                        });
-                    }}>
-                    {undoable ? 'Undo' : ''}
-                </Button>
             </View>
         );
     }

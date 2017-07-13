@@ -40,40 +40,56 @@ export class Home extends Component {
 
         this._beerPressed = this._beerPressed.bind(this);
         this._sodaPressed = this._sodaPressed.bind(this);
+        this.onUserUpdate = this.onUserUpdate.bind(this);
 
         mainNavigator = this.props.navigation;
     }
 
     async componentDidMount() {
         const user = await UserManager.getCurrentUser();
+        this.onUserUpdate(user);
+
+        UserManager.addListener(this.onUserUpdate);
+    }
+
+    onUserUpdate(user) {
         this.setState({
             username: user.username,
             balance: user.balance,
         });
     }
 
-    _updateActivities(item: ItemList) {
-        if (this.state.lastPress > Date.now() - 200) {return;}
+    async _updateActivities(item: ItemList) {
+        if (this.state.lastPress > Date.now() - 200) { return; }
 
         const newActivities = this.state.latestActivity.slice();
         newActivities.unshift(item);
-        this.setState({latestActivity: newActivities.slice(0, 5)});
+        this.setState({
+            latestActivity: newActivities.slice(0, 5),
+        });
 
         this.setState({
             lastPress: Date.now(),
         });
+
+        const balance = this.state.balance;
+        this.setState({
+            balance: balance - item.amount,
+        });
+
+        await UserManager.spendAmount(item.amount);
     }
 
-    _sodaPressed() {
-        this._updateActivities({
+    async _sodaPressed() {
+        await this._updateActivities({
             date: new Date(),
             type: 'soda',
             amount: 5,
         });
     }
 
-    _beerPressed() {
-        this._updateActivities({
+    async _beerPressed() {
+        await this._updateActivities({
             date: new Date(),
             type: 'beer',
             amount: 5,
@@ -128,5 +144,3 @@ export const HomeNavigator = DrawerNavigator({
 }, {
     contentComponent: props => <Menu items={props} getNavigator={() => mainNavigator}/>,
 });
-
-

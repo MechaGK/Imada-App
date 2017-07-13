@@ -1,7 +1,13 @@
-import React, {AsyncStorage} from 'react-native';
+import React, {
+    AsyncStorage
+} from 'react-native';
 
-import {EventEmitter} from 'fbemitter';
-import {serverAddress} from '../config/settings';
+import {
+    EventEmitter
+} from 'fbemitter';
+import {
+    serverAddress
+} from '../config/settings';
 
 class UserManager {
     _currentUser = null;
@@ -101,9 +107,17 @@ class UserManager {
 
         this.emitter.emit('userChanged', this._currentUser);
 
-        await AsyncStorage.multiSet([['token', token], ['userId', String(userId)], ['email', email], ['username', username], ['balance', String(balance)]],
+        await AsyncStorage.multiSet([
+                ['token', token],
+                ['userId', String(userId)],
+                ['email', email],
+                ['username', username],
+                ['balance', String(balance)]
+            ],
             (errors) => {
-                console.log(errors);
+                if (errors) {
+                    console.log(errors);
+                }
             });
     }
 
@@ -113,7 +127,11 @@ class UserManager {
                 const token = await AsyncStorage.getItem('token');
 
                 if (token !== null) {
-                    let email = null, username = null, userId = null, balance = null;
+                    let email = null,
+                        username = null,
+                        userId = null,
+                        balance = null;
+
                     await AsyncStorage.multiGet(['email', 'username', 'userId', 'balance'], (err, stores) => {
                         stores.map((result, i, store) => {
                             email = store[0][1];
@@ -142,8 +160,7 @@ class UserManager {
                     } else {
                         return null;
                     }
-                }
-                else {
+                } else {
                     return null;
                 }
             } catch (error) {
@@ -154,15 +171,28 @@ class UserManager {
         }
     }
 
-    async spendAmount(amount: number) {
-        if (this._currentUser === null) return;
+    async spendAmount(amount: number, time: ?Date) {
+        if (this._currentUser === null) {
+            return;
+        }
 
-        const response = await fetch(`${serverAddress}/api/ImadaUsers/spend?${this._currentUser.token}`, {
+        if (!time) {
+            time = new Date();
+        }
+
+        const timeJson = time.toJSON();
+
+        const response = await fetch(`${serverAddress}/api/ImadaUsers/spend?id=${this._currentUser.userId}&amount=${amount}&time=${timeJson}&access_token=${this._currentUser.token}`, {
             method: 'POST',
-            form: `id=${this._currentUser.userId}&amount=${amount}&time=${(new Date()).toJSON()}`
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
         });
 
         let responseJson = await response.json();
+        console.log(response);
+        console.log(responseJson);
 
         if (responseJson.error !== undefined) {
             return {
