@@ -8,7 +8,7 @@ import colors from '../../config/colors';
 export default StyleSheet.create({
     buttonStyle: {
         backgroundColor: colors.secondary,
-        borderRadius: 2,
+        borderRadius: 0,
         flex: 1,
         elevation: 2,
         flexDirection: 'row',

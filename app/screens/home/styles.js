@@ -47,5 +47,8 @@ export default StyleSheet.create({
         paddingBottom: 0,
         flexDirection: 'row',
         justifyContent: 'space-between',
+    },
+    hintText: {
+        textAlign: 'center',
     }
 });

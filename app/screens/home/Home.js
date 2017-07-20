@@ -106,6 +106,9 @@ export class Home extends Component {
                 </View>
                 <ActivityList
                     itemList={this.state.latestActivity}/>
+                <Text style={styles.hintText}>
+                    Double tap to set item
+                </Text>
                 <View style={{height: 150}}>
                     <View style={styles.buttonContainer}>
                         <MyButton
