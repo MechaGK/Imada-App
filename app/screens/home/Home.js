@@ -4,11 +4,14 @@ import {
     Image,
     View,
     Text,
+    TouchableOpacity,
+    Button
 } from 'react-native';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
 
 import Menu from '../../components/DrawerMenu/Menu';
 import MyButton from '../../components/MyButton/MyButton';
+import DrawerButton from '../../components/DrawerButton';
 import styles from './styles';
 
 import colors from '../../config/colors';
@@ -20,9 +23,10 @@ import SettingsScreen from '../SettingsScreen';
 var mainNavigator;
 
 export class Home extends Component {
-    static navigationOptions = {
+    static navigationOptions = ({ navigation, screenProps }) => ({
         title: 'Home',
-    };
+        headerLeft: <Button title="Menu" onPress={() => navigation.navigate('DrawerOpen') } />,
+    });
 
     state = {
         greetingTest: 'what',
