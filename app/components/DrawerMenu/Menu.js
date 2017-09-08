@@ -15,13 +15,13 @@ export default class Menu extends Component {
         getNavigator: Object,
     };
 
-    state = {
-        userName: 'no user',
-        userEmail: 'not signed in',
-    }
-
     constructor(props) {
         super(props);
+
+        this.state = {
+            userName: 'no user',
+            userEmail: 'not signed in',
+        }
 
         this.onUserChanged = this.onUserChanged.bind(this);
 

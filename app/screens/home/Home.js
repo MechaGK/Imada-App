@@ -28,19 +28,19 @@ export class Home extends Component {
         headerLeft: <Button title="Menu" onPress={() => navigation.navigate('DrawerOpen') } />,
     });
 
-    state = {
-        greetingTest: 'what',
-        latestActivity: [],
-        account: 0,
-        signInVisible: false,
-        registerVisible: false,
-        working: false,
-        username: '',
-        lastPress: 0,
-    };
-
     constructor(props) {
         super(props);
+
+        this.state = {
+            greetingTest: 'what',
+            latestActivity: [],
+            account: 0,
+            signInVisible: false,
+            registerVisible: false,
+            working: false,
+            username: '',
+            lastPress: 0,
+        };
 
         this._beerPressed = this._beerPressed.bind(this);
         this._sodaPressed = this._sodaPressed.bind(this);

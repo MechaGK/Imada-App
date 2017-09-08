@@ -19,15 +19,15 @@ export class SignInScreen extends Component {
         title: 'Sign In',
     };
 
-    state = {
-        visible: false,
-        username: '',
-        password: '',
-        state: '',
-    };
-
     constructor(props) {
         super(props);
+
+        this.state = {
+            visible: false,
+            username: '',
+            password: '',
+            state: '',
+        };
 
         this.usernameInputChanged = this.usernameInputChanged.bind(this);
         this.passwordInputChanged = this.passwordInputChanged.bind(this);
@@ -66,6 +66,7 @@ export class SignInScreen extends Component {
         });
 
         if (response.code === 'SUCCESS') {
+            console.log('Success!');
             return;
         }
 

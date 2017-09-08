@@ -14,8 +14,6 @@ class UserManager {
     emitter = new EventEmitter();
 
     async userSignIn(username, password) {
-        console.log(username);
-        console.log(password);
         let response = await fetch(`${serverAddress}/api/ImadaUsers/login`, {
             method: 'POST',
             headers: {
@@ -31,6 +29,7 @@ class UserManager {
         let responseJson = await response.json();
 
         if (responseJson.error !== undefined) {
+            console.log(responseJson);
             return {
                 code: responseJson.error.code,
                 message: responseJson.error.message,
@@ -39,8 +38,10 @@ class UserManager {
         }
 
         let userInfoResponse = await fetch(`${serverAddress}/api/ImadaUsers/${responseJson.userId}?access_token=${responseJson.id}`);
+        console.log(userInfoResponse);
 
         let userInfo = await userInfoResponse.json();
+        console.log(userInfoResponse);        
 
         await this.setCurrentUser(
             responseJson.id,
@@ -73,7 +74,7 @@ class UserManager {
         });
     }
 
-    async userRegister(name, email, password) {
+    async userRegister(name, username, email, password) {
         let response = await fetch(`${serverAddress}/api/ImadaUsers/`, {
             method: 'POST',
             headers: {
@@ -81,7 +82,7 @@ class UserManager {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: name,
+                username: username,
                 email: email,
                 password: password,
             })
@@ -121,6 +122,21 @@ class UserManager {
             });
     }
 
+    async updateUser() {
+        let userInfo = await fetch(`${serverAddress}/api/ImadaUsers/${this._currentUser.userId}?access_token=${this._currentUser.token}`);
+        let userInfoJson = await userInfo.json();
+
+        if (userInfoJson.error !== undefined) {
+            return null;
+        }
+
+        console.log(userInfoJson);
+
+        await this.setCurrentUser(this._currentUser.token, this._currentUser.userId, userInfoJson.email, userInfoJson.username, userInfoJson.balance);
+
+        return this._currentUser;
+    }
+
     async getCurrentUser() {
         if (this._currentUser === null) {
             try {
@@ -137,25 +153,16 @@ class UserManager {
                             email = store[0][1];
                             username = store[1][1];
                             userId = store[2][1];
-                            balance = Number(store[3][1]);
+                            balance = store[3][1];
                         });
 
                         console.log(err);
                     });
 
                     if (email !== null && username !== null && userId !== null && balance !== null) {
-                        console.log(`${serverAddress}/api/ImadaUsers/${userId}?access_token=${token}`);
-                        let userInfo = await fetch(`${serverAddress}/api/ImadaUsers/${userId}?access_token=${token}`);
-                        let userInfoJson = await userInfo.json();
-
-                        if (userInfoJson.error !== undefined) {
-                            return null;
-                        }
-
-                        console.log(userInfoJson);
-                        balance = userInfoJson.balance;
-
                         await this.setCurrentUser(token, userId, email, username, balance);
+                        this.updateUser();
+
                         return this._currentUser;
                     } else {
                         return null;

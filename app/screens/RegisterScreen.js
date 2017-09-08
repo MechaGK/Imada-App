@@ -16,21 +16,22 @@ export default class RegisterModal extends Component {
         title: 'Register',
     };
 
-    state = {
-        visible: false,
-        name: '',
-        username: '',
-        email: '',
-        password: '',
-        passwordRepeat: '',
-        working: false,
-    };
-
     constructor(props) {
         super(props);
 
+        this.state = {
+            visible: false,
+            name: '',
+            username: '',
+            email: '',
+            password: '',
+            passwordRepeat: '',
+            working: false,
+        };
+
         this.nameInputChanged = this.nameInputChanged.bind(this);
         this.emailInputChanged = this.emailInputChanged.bind(this);
+        this.usernameInputChanged = this.usernameInputChanged.bind(this);
         this.passwordInputChanged = this.passwordInputChanged.bind(this);
         this.passwordRepeatInputChanged = this.passwordRepeatInputChanged.bind(this);
         this.buttonPressed = this.buttonPressed.bind(this);
@@ -38,7 +39,7 @@ export default class RegisterModal extends Component {
 
     buttonPressed() {
         console.log(this.state);
-        this.props.registerPressed(this.state.name, this.state.email, this.state.password, this.state.passwordRepeat);
+        this.registerButtonPressed(this.state.name, this.state.username, this.state.email, this.state.password, this.state.passwordRepeat);
     }
 
     nameInputChanged(text) {
@@ -50,6 +51,12 @@ export default class RegisterModal extends Component {
     emailInputChanged(text) {
         this.setState({
             email: text,
+        });
+    }
+
+    usernameInputChanged(text) {
+        this.setState({
+            username: text,
         });
     }
 
@@ -83,7 +90,7 @@ export default class RegisterModal extends Component {
                 working: true,
             });
 
-            let response = await UserManager.userRegister(name, email, password);
+            let response = await UserManager.userRegister(name, username, email, password);
 
             this.setState({
                 working: false,
@@ -99,7 +106,8 @@ export default class RegisterModal extends Component {
             } else {
                 Alert.alert('Register successful', 'User registered');
 
-                this.props.navigation.back();
+                const {goBack} = this.props.navigation;
+                goBack();
 
                 return;
             }
