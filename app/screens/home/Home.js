@@ -8,6 +8,7 @@ import {
     Button
 } from 'react-native';
 import {DrawerNavigator, StackNavigator} from 'react-navigation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Menu from '../../components/DrawerMenu/Menu';
 import MyButton from '../../components/MyButton/MyButton';
@@ -25,7 +26,12 @@ var mainNavigator;
 export class Home extends Component {
     static navigationOptions = ({ navigation, screenProps }) => ({
         title: 'Home',
-        headerLeft: <Button title="Menu" onPress={() => navigation.navigate('DrawerOpen') } />,
+        headerLeft:
+            <TouchableOpacity
+                style={styles.drawerButton}
+                onPress={() => navigation.navigate('DrawerOpen')}>
+                <Icon name="menu" size={28} color={'black'}/>
+            </TouchableOpacity>,
     });
 
     constructor(props) {

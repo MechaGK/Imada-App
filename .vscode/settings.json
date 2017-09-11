@@ -3,5 +3,6 @@
     "javascript.validate.enable": false,
     "files.associations": {
         "*.js": "javascriptreact"
-    }
+    },
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

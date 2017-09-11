@@ -1,4 +1,4 @@
-import React, {StyleSheet} from 'react-native';
+import React, {StyleSheet, Platform} from 'react-native';
 import colors from '../../config/colors';
 
 export default StyleSheet.create({
@@ -50,5 +50,8 @@ export default StyleSheet.create({
     },
     hintText: {
         textAlign: 'center',
+    },
+    drawerButton: {
+        padding: (Platform.OS === 'android') ? 12 : 8,
     }
 });
