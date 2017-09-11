@@ -79,20 +79,29 @@ export class SignInScreen extends Component {
         Alert.alert('Sign in failed', message);
     }
 
+    focusNextField(nextField) {
+        this.refs[nextField].focus();
+    }
+
     render() {
         return (
             <View style={{padding: 12, backgroundColor: colors.background, flex: 1,}}>
                 <Text>Username</Text>
                 <TextInput
+                    ref="1"
                     value={this.state.username}
                     onChangeText={this.usernameInputChanged}
                     keyboardType={'email-address'}
                     height={48}
                     autoCapitalize={'none'}
                     placeholder={'abcde12'}
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => this.focusNextField('2')}
                 />
                 <Text>Password</Text>
                 <TextInput
+                    ref="2"
                     value={this.state.password}
                     onChangeText={this.passwordInputChanged}
                     secureTextEntry={true}
@@ -100,6 +109,9 @@ export class SignInScreen extends Component {
                     height={48}
                     placeholder={'hunter2'}
                     autoCorrect={false}
+                    returnKeyType="go"
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => this.loginButtonPressed(this.state.username, this.state.password)}
                 />
 
                 <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>

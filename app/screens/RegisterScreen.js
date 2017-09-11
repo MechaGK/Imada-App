@@ -85,6 +85,10 @@ export default class RegisterModal extends Component {
             message = 'Password is required';
         } else if (passwordRepeat !== password) {
             message = 'Password fields are not identical';
+        } else if (password.length < 6) {
+            message = 'Password must be at least 6 characters long';
+        } else if (!/^.+@.+\..+$/.test(email)){
+            message = 'Email is not valid';
         } else {
             this.setState({
                 working: true,
@@ -116,50 +120,74 @@ export default class RegisterModal extends Component {
         Alert.alert('Register failed', message);
     }
 
+    focusNextField(nextField) {
+        this.refs[nextField].focus();
+    }
+
     render() {
         return (
             <View style={{backgroundColor: colors.highBackground, padding: 16, flex: 1,}}>
                 <Text>Name</Text>
                 <TextInput
+                    ref="1"
                     value={this.state.name}
                     onChangeText={this.nameInputChanged}
                     height={48}
                     autoCapitalize={'words'}
                     keyboardType={'default'}
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => this.focusNextField('2')}
                 />
                 <Text>Username</Text>
                 <TextInput
+                    ref="2"
                     value={this.state.username}
                     onChangeText={this.usernameInputChanged}
                     height={48}
                     autoCapitalize={'none'}
                     keyboardType={'default'}
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => this.focusNextField('3')}
                 />
                 <Text>Email</Text>
                 <TextInput
+                    ref="3"
                     value={this.state.email}
                     onChangeText={this.emailInputChanged}
                     keyboardType={'email-address'}
                     height={48}
                     autoCapitalize={'none'}
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => this.focusNextField('4')}
                 />
                 <Text>Password</Text>
                 <TextInput
+                    ref="4"
                     value={this.state.password}
                     onChangeText={this.passwordInputChanged}
                     secureTextEntry={true}
                     autoCapitalize={'none'}
                     height={48}
                     autoCorrect={false}
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => this.focusNextField('5')}
                 />
                 <Text>Repeat password</Text>
                 <TextInput
+                    ref="5"
                     value={this.state.passwordRepeat}
                     onChangeText={this.passwordRepeatInputChanged}
                     secureTextEntry={true}
                     autoCapitalize={'none'}
                     height={48}
                     autoCorrect={false}
+                    returnKeyType="go"
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => this.buttonPressed()}
                 />
 
                 <View style={{padding: 8, }}>
