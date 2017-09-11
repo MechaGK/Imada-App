@@ -1,4 +1,4 @@
-package com.testproject;
+package dk.mechagk.imadaapp;
 
 import com.facebook.react.ReactActivity;
 
