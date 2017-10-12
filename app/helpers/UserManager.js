@@ -81,15 +81,10 @@ class UserManager {
         this._currentUser = null;
         this.emitter.emit('userChanged', this._currentUser);
 
-        await AsyncStorage.removeItem('token', (errors) => {
-            console.log(errors);
-        }).then(() => {
-            console.log("what");
-        })
-
         await AsyncStorage.multiRemove(['token', 'userId', 'email', 'username', 'balance'], (errors) => {
             console.log(errors);
         });
+
     }
 
     async userRegister(name, username, email, password) {
