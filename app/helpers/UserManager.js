@@ -13,8 +13,20 @@ class UserManager {
     _currentUser = null;
     emitter = new EventEmitter();
 
+    createApiUrl(url, access_token = null) {
+        if (access_token !== null) {
+            return `${serverAddress}/api/${url}?access_token=${access_token}`;
+        }
+        else if (this._currentUser !== null) {
+            return `${serverAddress}/api/${url}?access_token=${this._currentUser}`;
+        }
+        else {
+            return `${serverAddress}/api/${url}`;
+        }
+    }
+
     async userSignIn(username, password) {
-        let response = await fetch(`${serverAddress}/api/ImadaUsers/login`, {
+        let response = await fetch(this.createApiUrl('ImadaUsers/login'), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -37,7 +49,7 @@ class UserManager {
             };
         }
 
-        let userInfoResponse = await fetch(`${serverAddress}/api/ImadaUsers/${responseJson.userId}?access_token=${responseJson.id}`);
+        let userInfoResponse = await fetch(this.createApiUrl(`ImadaUsers/${responseJson.userId}`, responseJson.id));
         console.log(userInfoResponse);
 
         let userInfo = await userInfoResponse.json();
@@ -62,12 +74,18 @@ class UserManager {
     async userSignOut() {
         if (this._currentUser === null) return;
 
-        await fetch(`${serverAddress}/api/ImadaUsers/logout?${this._currentUser.token}`, {
+        await fetch(this.createApiUrl(`ImadaUsers/logout`), {
             method: 'POST',
         });
 
         this._currentUser = null;
         this.emitter.emit('userChanged', this._currentUser);
+
+        await AsyncStorage.removeItem('token', (errors) => {
+            console.log(errors);
+        }).then(() => {
+            console.log("what");
+        })
 
         await AsyncStorage.multiRemove(['token', 'userId', 'email', 'username', 'balance'], (errors) => {
             console.log(errors);
@@ -75,7 +93,7 @@ class UserManager {
     }
 
     async userRegister(name, username, email, password) {
-        let response = await fetch(`${serverAddress}/api/ImadaUsers/`, {
+        let response = await fetch(this.createApiUrl(`ImadaUsers`), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -123,7 +141,7 @@ class UserManager {
     }
 
     async updateUser() {
-        let userInfo = await fetch(`${serverAddress}/api/ImadaUsers/${this._currentUser.userId}?access_token=${this._currentUser.token}`);
+        let userInfo = await fetch(this.createApiUrl(`ImadaUsers/${this._currentUser.userId}`));
         let userInfoJson = await userInfo.json();
 
         if (userInfoJson.error !== undefined) {
@@ -189,7 +207,7 @@ class UserManager {
 
         const timeJson = time.toJSON();
 
-        const response = await fetch(`${serverAddress}/api/ImadaUsers/spend?id=${this._currentUser.userId}&amount=${amount}&time=${timeJson}&access_token=${this._currentUser.token}`, {
+        const response = await fetch(this.createApiUrl(`ImadaUsers/spend?id=${this._currentUser.userId}&amount=${amount}&time=${timeJson}`), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -209,7 +227,7 @@ class UserManager {
             };
         }
 
-        const transactionResponse = await fetch(`${serverAddress}/api/Transaction/${responseJson.transactionId}?access_token=${this._currentUser.token}`);
+        const transactionResponse = await fetch(this.createApiUrl(`Transaction/${responseJson.transactionId}`));
 
         const transaction = await transactionResponse.json();
 

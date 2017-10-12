@@ -21,15 +21,29 @@ export default class Menu extends Component {
         this.state = {
             userName: 'no user',
             userEmail: 'not signed in',
+            eventSubscription: null
         }
 
-        this.onUserChanged = this.onUserChanged.bind(this);
-
-        UserManager.addListener((user) => this.onUserChanged(user));
+        this.onUserChanged = this.onUserChanged.bind(this);        
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         this.onUserChanged(await UserManager.getCurrentUser());
+
+        let sub = UserManager.addListener((user) => this.onUserChanged(user));
+
+        this.setState({
+            eventSubscription: sub
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.state.eventSubscription !== null) {
+            this.state.eventSubscription.remove();
+            this.setState({
+                eventSubscription: null
+            });
+        }
     }
 
     onUserChanged(newUser) {

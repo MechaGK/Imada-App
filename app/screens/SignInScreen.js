@@ -61,10 +61,6 @@ export class SignInScreen extends Component {
 
         let response = await UserManager.userSignIn(username, password);
 
-        this.setState({
-            working: false,
-        });
-
         if (response.code === 'SUCCESS') {
             console.log('Success!');
             return;

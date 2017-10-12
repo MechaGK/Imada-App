@@ -46,6 +46,7 @@ export class Home extends Component {
             working: false,
             username: '',
             lastPress: 0,
+            eventSubscription: null
         };
 
         this._beerPressed = this._beerPressed.bind(this);
@@ -55,11 +56,23 @@ export class Home extends Component {
         mainNavigator = this.props.navigation;
     }
 
-    async componentDidMount() {
+    async componentWillMount() {
         const user = await UserManager.getCurrentUser();
         this.onUserUpdate(user);
 
-        UserManager.addListener(this.onUserUpdate);
+        var sub = UserManager.addListener(this.onUserUpdate);
+        this.setState({
+            eventSubscription: sub
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.state.eventSubscription !== null) {
+            this.state.eventSubscription.remove();
+            this.setState({
+                eventSubscription: null
+            });
+        }
     }
 
     onUserUpdate(user) {
